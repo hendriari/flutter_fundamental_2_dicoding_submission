@@ -4,9 +4,9 @@ import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domai
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/entities/restaurants_review.dart';
 
 class DetailRestaurants extends Restaurants {
-  List<RestaurantsReview>? listReview;
-  List<RestaurantsCategory>? listCategory;
-  RestaurantsMenu? restaurantsMenu;
+  final List<RestaurantsReview>? listReview;
+  final List<RestaurantsCategory>? listCategory;
+  final RestaurantsMenu? restaurantsMenu;
 
   DetailRestaurants({
     super.id,

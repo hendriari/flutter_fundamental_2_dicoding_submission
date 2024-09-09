@@ -1,11 +1,8 @@
-import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/entities/beverage.dart';
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/entities/restaurants_beverage.dart';
 
 class RestaurantsMenu {
-  List<Beverage>? foods;
-  List<Beverage>? drinks;
+  final List<RestaurantsBeverage>? listFoods;
+  final List<RestaurantsBeverage>? listDrinks;
 
-  RestaurantsMenu({
-    this.foods,
-    this.drinks,
-  });
+  RestaurantsMenu({this.listFoods, this.listDrinks});
 }
