@@ -6,8 +6,7 @@ import 'package:dartz/dartz.dart';
 abstract class RestaurantsRepository {
   Future<Either<Failure, List<Restaurants>?>> getListRestaurants();
 
-  Future<Either<Failure, DetailRestaurants>?> getDetailRestaurants(
-      String? restoId);
+  Future<Either<Failure, DetailRestaurants?>> getDetailRestaurants(String? id);
 
   Future<Either<Failure, List<Restaurants>?>> searchRestaurants(String query);
 }

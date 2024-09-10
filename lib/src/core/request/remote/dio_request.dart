@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:fluttter_fundamental_submission_2/src/core/error/exception.dart';
 import 'package:fluttter_fundamental_submission_2/src/core/request/remote/constants_base_url.dart';
 import 'package:injectable/injectable.dart';
 import 'package:dio/dio.dart';
@@ -29,5 +31,129 @@ class DioRequest {
         onError: (exception, handler) async => handler.next(exception),
       ),
     );
+  }
+
+  Future<Response?> put({
+    required String url,
+    Map<String, dynamic>? body,
+    Map<String, dynamic>? param,
+  }) async {
+    try {
+      return _dio.put(
+        url,
+        queryParameters: param,
+        data: body,
+      );
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        throw const ConnectionException(
+            message:
+                'You have an unstable network, please try again when network stabilizes.');
+      } else if (e.type == DioExceptionType.connectionError ||
+          (e.type == DioExceptionType.unknown && e.error is SocketException)) {
+        throw const ConnectionException(
+            message: "No internet connection, please try again.");
+      } else if (e.type == DioExceptionType.unknown) {
+        throw GeneralException(
+            message: "An unknown error occurred.\n${e.message}");
+      } else {
+        throw ServerException(message: 'Failed: ${e.message}');
+      }
+    } catch (e) {
+      throw GeneralException(message: "An unknown error occurred.\n$e");
+    }
+  }
+
+  Future<Response?> get({
+    required String url,
+    Map<String, dynamic>? param,
+  }) async {
+    try {
+      return _dio.get(
+        url,
+        queryParameters: param,
+      );
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        throw const ConnectionException(
+            message:
+                'You have an unstable network, please try again when network stabilizes.');
+      } else if (e.type == DioExceptionType.connectionError ||
+          (e.type == DioExceptionType.unknown && e.error is SocketException)) {
+        throw const ConnectionException(
+            message: "No internet connection, please try again.");
+      } else if (e.type == DioExceptionType.unknown) {
+        throw GeneralException(
+            message: "An unknown error occurred.\n${e.message}");
+      } else {
+        throw ServerException(message: 'Failed: ${e.message}');
+      }
+    } catch (e) {
+      throw GeneralException(message: "An unknown error occurred.\n$e");
+    }
+  }
+
+  Future<Response?> post({
+    required String url,
+    Map<String, dynamic>? body,
+    Map<String, dynamic>? param,
+  }) async {
+    try {
+      return _dio.post(
+        url,
+        queryParameters: param,
+        data: body,
+      );
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        throw const ConnectionException(
+            message:
+                'You have an unstable network, please try again when network stabilizes.');
+      } else if (e.type == DioExceptionType.connectionError ||
+          (e.type == DioExceptionType.unknown && e.error is SocketException)) {
+        throw const ConnectionException(
+            message: "No internet connection, please try again.");
+      } else if (e.type == DioExceptionType.unknown) {
+        throw GeneralException(
+            message: "An unknown error occurred.\n${e.message}");
+      } else {
+        throw ServerException(message: 'Failed: ${e.message}');
+      }
+    } catch (e) {
+      throw GeneralException(message: "An unknown error occurred.\n$e");
+    }
+  }
+
+  Future<Response?> delete({
+    required String url,
+    Map<String, dynamic>? param,
+  }) async {
+    try {
+      return _dio.delete(
+        url,
+        queryParameters: param,
+      );
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        throw const ConnectionException(
+            message:
+                'You have an unstable network, please try again when network stabilizes.');
+      } else if (e.type == DioExceptionType.connectionError ||
+          (e.type == DioExceptionType.unknown && e.error is SocketException)) {
+        throw const ConnectionException(
+            message: "No internet connection, please try again.");
+      } else if (e.type == DioExceptionType.unknown) {
+        throw GeneralException(
+            message: "An unknown error occurred.\n${e.message}");
+      } else {
+        throw ServerException(message: 'Failed: ${e.message}');
+      }
+    } catch (e) {
+      throw GeneralException(message: "An unknown error occurred.\n$e");
+    }
   }
 }
