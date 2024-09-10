@@ -14,6 +14,10 @@ import 'package:fluttter_fundamental_submission_2/src/core/request/remote/consta
     as _i275;
 import 'package:fluttter_fundamental_submission_2/src/core/request/remote/dio_request.dart'
     as _i961;
+import 'package:fluttter_fundamental_submission_2/src/core/routes/go_route_config.dart'
+    as _i185;
+import 'package:fluttter_fundamental_submission_2/src/core/utils/constants.dart'
+    as _i659;
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/data/datasource/restaurants_remote_datasource.dart'
     as _i559;
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/repository/restaurants_repository.dart'
@@ -39,6 +43,8 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final injectionModule = _$InjectionModule(this);
+    gh.singleton<_i659.Constants>(() => injectionModule.constants);
+    gh.singleton<_i185.GoRouteConfig>(() => injectionModule.routeConfig);
     gh.singleton<_i275.ConstantsBaseUrl>(
         () => injectionModule.constantsBaseUrl);
     gh.lazySingleton<_i559.RestaurantsRemoteDatasource>(
