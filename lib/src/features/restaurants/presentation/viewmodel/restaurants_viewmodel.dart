@@ -5,14 +5,17 @@ import 'package:fluttter_fundamental_submission_2/src/core/request/remote/consta
 import 'package:fluttter_fundamental_submission_2/src/core/utils/enums.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/entities/detail_restaurants.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/entities/restaurants.dart';
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/entities/restaurants_review.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/get_detail_resto_usecase.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/get_list_restaurants_usecase.dart';
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/post_review_usecase.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/search_restaurants_usecase.dart';
 
 class RestaurantsViewModel with ChangeNotifier {
   final GetListRestaurantsUsecase getListRestaurantsUsecase;
   final GetDetailRestaurantsUsecase getDetailRestaurantsUsecase;
   final SearchRestaurantsUsecase searchRestaurantsUsecase;
+  final PostReviewUsecase postReviewUsecase;
   final ConstantsBaseUrl constantsBaseUrl;
 
   RestaurantsViewModel({
@@ -20,14 +23,17 @@ class RestaurantsViewModel with ChangeNotifier {
     required this.getDetailRestaurantsUsecase,
     required this.searchRestaurantsUsecase,
     required this.constantsBaseUrl,
+    required this.postReviewUsecase,
   })  : _getListRestaurantsUsecase = getListRestaurantsUsecase,
         _getDetailRestaurantsUsecase = getDetailRestaurantsUsecase,
         _searchRestaurantsUsecase = searchRestaurantsUsecase,
+        _postReviewUsecase = postReviewUsecase,
         _constantsBaseUrl = constantsBaseUrl;
 
   final GetListRestaurantsUsecase _getListRestaurantsUsecase;
   final GetDetailRestaurantsUsecase _getDetailRestaurantsUsecase;
   final SearchRestaurantsUsecase _searchRestaurantsUsecase;
+  final PostReviewUsecase _postReviewUsecase;
   final ConstantsBaseUrl _constantsBaseUrl;
 
   /// RESTAURANTS PICTURE URL
@@ -170,5 +176,72 @@ class RestaurantsViewModel with ChangeNotifier {
         notifyListeners();
       },
     );
+  }
+
+  /// RESTAURANTS REVIEW
+  List<RestaurantsReview>? _newListReviewData = [];
+
+  List<RestaurantsReview>? get listReviewData => _newListReviewData;
+
+  StateOfConnection _loadingPostReview = StateOfConnection.doNothing;
+
+  StateOfConnection get loadingPostReview => _loadingPostReview;
+
+  Future<void> postReview({
+    required String restaurantsId,
+    required String reviewerName,
+    required String description,
+    Function()? onSuccess,
+    Function(String?)? onError,
+  }) async {
+    _loadingPostReview = StateOfConnection.waiting;
+    notifyListeners();
+
+    Either<Failure, List<RestaurantsReview>?> result = await _postReviewUsecase
+        .execute(restaurantsId, reviewerName, description);
+
+    result.fold(
+      (failure) {
+        if (failure is ServerFailure) {
+          _loadingSearchRestaurants = StateOfConnection.failed;
+          notifyListeners();
+          onError?.call(failure.message);
+        } else if (failure is ConnectionFailure) {
+          _loadingSearchRestaurants = StateOfConnection.failed;
+          notifyListeners();
+          onError?.call(failure.message);
+        } else if (failure is GeneralFailure) {
+          _loadingSearchRestaurants = StateOfConnection.failed;
+          notifyListeners();
+          onError?.call(failure.message);
+        } else {
+          _loadingSearchRestaurants = StateOfConnection.failed;
+          notifyListeners();
+          onError?.call(failure.toString());
+        }
+      },
+      (data) {
+        _newListReviewData = data;
+        _loadingPostReview = StateOfConnection.success;
+        onSuccess?.call();
+        notifyListeners();
+      },
+    );
+  }
+
+  /// CLEAR TEMP DATA
+  void clearTempDetailRestaurants() {
+    Future.delayed(const Duration(seconds: 1), () {
+      _detailRestaurants = null;
+      _newListReviewData?.clear();
+      notifyListeners();
+    });
+  }
+
+  void clearTempSearchRestaurants() {
+    Future.delayed(const Duration(seconds: 1), () {
+      _listResultSearchRestaurants?.clear();
+      notifyListeners();
+    });
   }
 }

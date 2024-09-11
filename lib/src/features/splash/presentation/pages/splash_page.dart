@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
     _constants = getIt<Constants>();
     Future.delayed(
       const Duration(seconds: 6),
-      () => context.pushReplacement('/listRestaurantsPage'),
+      () => context.pushReplacement('/restaurants'),
     );
     super.initState();
   }

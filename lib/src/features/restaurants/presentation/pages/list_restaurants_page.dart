@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttter_fundamental_submission_2/src/core/utils/custom_text_style.dart';
+import 'package:fluttter_fundamental_submission_2/src/core/injector/injection.dart';
 import 'package:fluttter_fundamental_submission_2/src/core/utils/enums.dart';
+import 'package:fluttter_fundamental_submission_2/src/core/utils/helper.dart';
+import 'package:fluttter_fundamental_submission_2/src/core/utils/hex_color.dart';
 import 'package:fluttter_fundamental_submission_2/src/core/utils/my_colors.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/viewmodel/restaurants_viewmodel.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/widget/form_field_widget.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/widget/header_presistent.dart';
-import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/widget/list_restaurants_shimmer_widget.dart';
-import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/widget/restaurants_card_widget.dart';
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/widget/refresh_widget.dart';
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/widget/restaurants_widget/list_restaurants_shimmer_widget.dart';
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/widget/restaurants_widget/restaurants_card_widget.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class ListRestaurantsPage extends StatefulWidget {
@@ -18,12 +22,21 @@ class ListRestaurantsPage extends StatefulWidget {
 }
 
 class _ListRestaurantsPageState extends State<ListRestaurantsPage> {
+  late Helper _helper;
+
   @override
   void initState() {
+    _helper = getIt<Helper>();
     final restaurants =
         Provider.of<RestaurantsViewModel>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await restaurants.getListRestaurants();
+      await restaurants.getListRestaurants(
+        onError: (error) => _helper.showToast(
+          message: error ?? 'someting error',
+          backgroundColor: HexColor('8b0000'),
+          textColor: Colors.white,
+        ),
+      );
     });
     super.initState();
   }
@@ -50,9 +63,10 @@ class _ListRestaurantsPageState extends State<ListRestaurantsPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Apa kabar hari ini ?',
-                                style: CustomTextStyle.titleLarge.copyWith(
+                                'How are you today ?',
+                                style: TextStyle(
                                   fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
 
@@ -62,10 +76,10 @@ class _ListRestaurantsPageState extends State<ListRestaurantsPage> {
 
                               /// header text 2
                               Text(
-                                'Temukan restaurant favoritmu disini !',
-                                style: CustomTextStyle.titleMedium.copyWith(
+                                'Find your favorite restaurant here!',
+                                style: TextStyle(
                                   fontSize: 14.sp,
-                                  color: Colors.grey.withOpacity(.7),
+                                  color: Colors.grey,
                                 ),
                               ),
 
@@ -91,8 +105,8 @@ class _ListRestaurantsPageState extends State<ListRestaurantsPage> {
                             readOnly: true,
                             borderRadius: 40,
                             formColor: Colors.white,
-                            hintText: 'Cari Resto',
-                            onTap: () {},
+                            hintText: 'Search Restaurants',
+                            onTap: () => context.goNamed('search-restaurants'),
                           ),
                         ),
                       ),
@@ -115,100 +129,72 @@ class _ListRestaurantsPageState extends State<ListRestaurantsPage> {
                         })
                     : restaurantsProvider.loadingGetListRestaurants ==
                             StateOfConnection.failed
-                        ? _buildRefreshWidget(
+                        ? refreshWidget(
+                            textInfo: 'Oops, something went wrong',
                             onTap: () async {
                               await restaurantsProvider.getListRestaurants();
                             },
                           )
-                        : RefreshIndicator(
-                            color: MyColors.primary600,
-                            onRefresh: () async {
-                              await restaurantsProvider.getListRestaurants();
-                            },
-                            child: ListView.builder(
-                              padding: EdgeInsets.only(
-                                bottom: 4.h,
-                                top: 4.h,
+                        : restaurantsProvider.listRestaurantsData == null ||
+                                restaurantsProvider.listRestaurantsData!.isEmpty
+                            ? refreshWidget(
+                                textInfo: 'Restaurant data not available',
+                                onTap: () async {
+                                  await restaurantsProvider
+                                      .getListRestaurants();
+                                },
+                              )
+                            : RefreshIndicator(
+                                color: MyColors.primary600,
+                                onRefresh: () async {
+                                  await restaurantsProvider
+                                      .getListRestaurants();
+                                },
+                                child: ListView.builder(
+                                  padding: EdgeInsets.only(
+                                    bottom: 4.h,
+                                    top: 4.h,
+                                  ),
+                                  shrinkWrap: true,
+                                  itemCount: restaurantsProvider
+                                      .listRestaurantsData?.length,
+                                  itemBuilder: (context, index) {
+                                    var data = restaurantsProvider
+                                        .listRestaurantsData?[index];
+                                    return restaurantsCardWidget(
+                                      context: context,
+                                      restoName: data?.name ?? '-',
+                                      restoCityLocation: data?.city ?? '-',
+                                      restoDescription:
+                                          data?.description ?? '-',
+                                      restoRanting: '${data?.rating ?? 0}',
+                                      restoImageUrl: restaurantsProvider
+                                          .restaurantsPictureUrl(
+                                              data?.pictureId),
+                                      onTap: () {
+                                        if (data?.id != null) {
+                                          context.goNamed('restaurants-detail',
+                                              pathParameters: {
+                                                'id': data!.id!
+                                              });
+                                        } else {
+                                          _helper.showToast(
+                                            message:
+                                                'Sorry, there was an error when retrieving restaurant data',
+                                            backgroundColor: HexColor('8b0000'),
+                                            textColor: Colors.white,
+                                          );
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
-                              shrinkWrap: true,
-                              itemCount: restaurantsProvider
-                                  .listRestaurantsData?.length,
-                              itemBuilder: (context, index) {
-                                var data = restaurantsProvider
-                                    .listRestaurantsData?[index];
-                                return restaurantsCardWidget(
-                                  context: context,
-                                  restoName: data?.name ?? '-',
-                                  restoCityLocation: data?.city ?? '-',
-                                  restoDescription: data?.description ?? '-',
-                                  restoRanting: '${data?.rating ?? 0}',
-                                  restoImageUrl: restaurantsProvider
-                                      .restaurantsPictureUrl(data?.pictureId),
-                                  onTap: () {},
-                                );
-                              },
-                            ),
-                          ),
               );
             },
           ),
         ),
       ),
-    );
-  }
-
-  /// ERROR REFRESH WIDGET
-  Widget _buildRefreshWidget({
-    Function()? onTap,
-  }) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Oops, something went wrong',
-          style: CustomTextStyle.titleMedium.copyWith(
-            fontSize: 16.sp,
-          ),
-        ),
-
-        SizedBox(
-          height: 4.h,
-        ),
-
-        /// REFRESH BUTTON
-        ElevatedButton(
-          onPressed: onTap,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: MyColors.primary600,
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.refresh,
-                color: Colors.black,
-                size: 16.sp,
-              ),
-              SizedBox(
-                width: 6.w,
-              ),
-              Text(
-                'Refresh',
-                style: CustomTextStyle.titleMedium.copyWith(
-                  color: Colors.black,
-                  fontSize: 14.sp,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

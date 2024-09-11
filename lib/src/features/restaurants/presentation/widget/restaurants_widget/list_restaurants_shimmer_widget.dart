@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttter_fundamental_submission_2/src/core/utils/custom_text_style.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/widget/shimmer_loading_widget.dart';
 
 Widget listRestaurantsShimmerWidget() {
@@ -60,7 +59,7 @@ Widget listRestaurantsShimmerWidget() {
                   shimmerLoadingWidget(
                     child: Text(
                       'loading',
-                      style: CustomTextStyle.bodyLarge.copyWith(
+                      style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
                       ),
@@ -87,7 +86,7 @@ Widget listRestaurantsShimmerWidget() {
                         ),
                         Text(
                           'loading',
-                          style: CustomTextStyle.bodyMedium.copyWith(
+                          style: TextStyle(
                             fontSize: 12.sp,
                             color: Colors.grey,
                           ),
@@ -104,7 +103,7 @@ Widget listRestaurantsShimmerWidget() {
                   shimmerLoadingWidget(
                     child: Text(
                       'loading...',
-                      style: CustomTextStyle.bodyMedium.copyWith(
+                      style: TextStyle(
                         fontSize: 11.sp,
                         color: Colors.black54,
                         fontWeight: FontWeight.w600,
@@ -148,7 +147,7 @@ Widget listRestaurantsShimmerWidget() {
                   /// ranting resto
                   Text(
                     '5',
-                    style: CustomTextStyle.bodyMedium.copyWith(
+                    style: TextStyle(
                       fontSize: 12.sp,
                     ),
                   ),

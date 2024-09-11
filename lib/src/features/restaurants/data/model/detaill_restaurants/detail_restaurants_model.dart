@@ -63,12 +63,11 @@ class DetailRestaurantsModel extends DetailRestaurants {
           List<RestaurantsCategory>? data) =>
       data?.map((e) => (e as RestaurantsCategoryModel).toJson()).toList();
 
-  static List<RestaurantsReview>? _customerReviewFromJson(
-          List<dynamic>? json) =>
-      json
-          ?.map(
-              (e) => RestaurantsReviewModel.fromJson(e as Map<String, dynamic>))
-          .toList();
+  static List<RestaurantsReview>? _customerReviewFromJson(List<dynamic>? json) {
+    return json
+        ?.map((e) => RestaurantsReviewModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
 
   static List<Map<String, dynamic>>? _customerReviewToJson(
           List<RestaurantsReview>? data) =>

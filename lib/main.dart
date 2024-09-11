@@ -5,6 +5,7 @@ import 'package:fluttter_fundamental_submission_2/src/core/injector/injection.da
 import 'package:fluttter_fundamental_submission_2/src/core/routes/go_route_config.dart';
 import 'package:fluttter_fundamental_submission_2/src/core/utils/my_colors.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/viewmodel/restaurants_viewmodel.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -26,7 +27,7 @@ class _RestaurantsAppState extends State<RestaurantsApp> {
 
   @override
   void initState() {
-    _routeConfig = getIt<GoRouteConfig>();
+    _routeConfig = GoRouteConfig();
     super.initState();
   }
 
@@ -38,6 +39,7 @@ class _RestaurantsAppState extends State<RestaurantsApp> {
         getDetailRestaurantsUsecase: getIt(),
         searchRestaurantsUsecase: getIt(),
         constantsBaseUrl: getIt(),
+        postReviewUsecase: getIt(),
       ),
       child: ScreenUtilInit(
         builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
@@ -53,6 +55,7 @@ class _RestaurantsAppState extends State<RestaurantsApp> {
               colorScheme: Theme.of(context)
                   .colorScheme
                   .copyWith(secondary: Colors.white),
+              textTheme: GoogleFonts.montserratTextTheme(),
             ),
           ),
         ),

@@ -10,6 +10,8 @@ Widget formFieldWidget({
   Widget? prefix,
   Color? formColor,
   double? borderRadius,
+  String? Function(String?)? validator,
+  int? maxLines,
 }) {
   return TextFormField(
     controller: controller,
@@ -17,6 +19,8 @@ Widget formFieldWidget({
     readOnly: readOnly ?? false,
     onTap: onTap,
     onChanged: onChanged,
+    validator: validator,
+    maxLines: maxLines,
     decoration: InputDecoration(
       isDense: true,
       filled: true,

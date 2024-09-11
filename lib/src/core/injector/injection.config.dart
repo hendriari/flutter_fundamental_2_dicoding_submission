@@ -8,6 +8,8 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluttter_fundamental_submission_2/src/core/error/dio_exception_handler.dart'
+    as _i1003;
 import 'package:fluttter_fundamental_submission_2/src/core/injector/injection_module.dart'
     as _i887;
 import 'package:fluttter_fundamental_submission_2/src/core/request/remote/constants_base_url.dart'
@@ -18,6 +20,8 @@ import 'package:fluttter_fundamental_submission_2/src/core/routes/go_route_confi
     as _i185;
 import 'package:fluttter_fundamental_submission_2/src/core/utils/constants.dart'
     as _i659;
+import 'package:fluttter_fundamental_submission_2/src/core/utils/helper.dart'
+    as _i851;
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/data/datasource/restaurants_remote_datasource.dart'
     as _i559;
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/repository/restaurants_repository.dart'
@@ -49,14 +53,22 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i185.GoRouteConfig>(() => injectionModule.routeConfig);
     gh.singleton<_i275.ConstantsBaseUrl>(
         () => injectionModule.constantsBaseUrl);
+    gh.lazySingleton<_i1003.DioExceptionHandler>(
+        () => injectionModule.dioExceptionHandler);
     gh.lazySingleton<_i559.RestaurantsRemoteDatasource>(
         () => injectionModule.restaurantsRemoteDatasource);
     gh.lazySingleton<_i679.RestaurantsRepository>(
         () => injectionModule.restaurantsRepository);
+    gh.lazySingleton<_i851.Helper>(() => injectionModule.helper);
     gh.singleton<Map<String, dynamic>>(
       () => injectionModule.headers,
       instanceName: 'headers',
     );
+    gh.factory<_i961.DioRequest>(() => _i961.DioRequest(
+          gh<_i275.ConstantsBaseUrl>(),
+          gh<_i1003.DioExceptionHandler>(),
+          gh<Map<String, dynamic>>(instanceName: 'headers'),
+        ));
     gh.lazySingleton<_i981.GetListRestaurantsUsecase>(
         () => injectionModule.getListRestaurantsUsecase);
     gh.lazySingleton<_i998.GetDetailRestaurantsUsecase>(
@@ -65,10 +77,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => injectionModule.searchRestaurantsUsecase);
     gh.lazySingleton<_i144.PostReviewUsecase>(
         () => injectionModule.postReviewUsecase);
-    gh.factory<_i961.DioRequest>(() => _i961.DioRequest(
-          gh<_i275.ConstantsBaseUrl>(),
-          gh<Map<String, dynamic>>(instanceName: 'headers'),
-        ));
     gh.factory<_i559.RestaurantsRemoteDatasourceImpl>(
         () => _i559.RestaurantsRemoteDatasourceImpl(
               gh<_i961.DioRequest>(),
@@ -82,6 +90,13 @@ class _$InjectionModule extends _i887.InjectionModule {
   _$InjectionModule(this._getIt);
 
   final _i174.GetIt _getIt;
+
+  @override
+  _i1003.DioExceptionHandler get dioExceptionHandler =>
+      _i1003.DioExceptionHandler();
+
+  @override
+  _i851.Helper get helper => _i851.Helper();
 
   @override
   _i981.GetListRestaurantsUsecase get getListRestaurantsUsecase =>

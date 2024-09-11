@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttter_fundamental_submission_2/src/core/utils/custom_text_style.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/presentation/widget/image_widget.dart';
 
 Widget restaurantsCardWidget({
@@ -48,9 +47,9 @@ Widget restaurantsCardWidget({
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               /// IMAGE RESTAURANTS
-              imageWidget(
+              ImageWidget(
                 imageUrl: restoImageUrl,
-                imageHeight: 80.h,
+                imageHeight: 100.h,
                 imageWidth: 110.w,
               ),
 
@@ -66,7 +65,7 @@ Widget restaurantsCardWidget({
                     /// resto name
                     Text(
                       restoName,
-                      style: CustomTextStyle.bodyLarge.copyWith(
+                      style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
                       ),
@@ -91,7 +90,7 @@ Widget restaurantsCardWidget({
                         ),
                         Text(
                           restoCityLocation,
-                          style: CustomTextStyle.bodyMedium.copyWith(
+                          style: TextStyle(
                             fontSize: 12.sp,
                             color: Colors.grey,
                           ),
@@ -106,7 +105,7 @@ Widget restaurantsCardWidget({
                     /// resto description
                     Text(
                       restoDescription,
-                      style: CustomTextStyle.bodyMedium.copyWith(
+                      style: TextStyle(
                         fontSize: 11.sp,
                         color: Colors.black54,
                         fontWeight: FontWeight.w600,
@@ -160,7 +159,7 @@ Widget restaurantsCardWidget({
                 /// ranting resto
                 Text(
                   restoRanting,
-                  style: CustomTextStyle.bodyMedium.copyWith(
+                  style: TextStyle(
                     fontSize: 12.sp,
                   ),
                 ),
