@@ -26,6 +26,8 @@ import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domai
     as _i998;
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/get_list_restaurants_usecase.dart'
     as _i981;
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/post_review_usecase.dart'
+    as _i144;
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/search_restaurants_usecase.dart'
     as _i136;
 import 'package:get_it/get_it.dart' as _i174;
@@ -61,6 +63,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => injectionModule.getDetailRestoUsecase);
     gh.lazySingleton<_i136.SearchRestaurantsUsecase>(
         () => injectionModule.searchRestaurantsUsecase);
+    gh.lazySingleton<_i144.PostReviewUsecase>(
+        () => injectionModule.postReviewUsecase);
     gh.factory<_i961.DioRequest>(() => _i961.DioRequest(
           gh<_i275.ConstantsBaseUrl>(),
           gh<Map<String, dynamic>>(instanceName: 'headers'),
@@ -90,4 +94,8 @@ class _$InjectionModule extends _i887.InjectionModule {
   @override
   _i136.SearchRestaurantsUsecase get searchRestaurantsUsecase =>
       _i136.SearchRestaurantsUsecase(_getIt<_i679.RestaurantsRepository>());
+
+  @override
+  _i144.PostReviewUsecase get postReviewUsecase =>
+      _i144.PostReviewUsecase(_getIt<_i679.RestaurantsRepository>());
 }

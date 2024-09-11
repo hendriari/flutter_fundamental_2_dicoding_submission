@@ -37,8 +37,9 @@ class DetailRestaurantsModel extends DetailRestaurants {
     super.pictureId,
     super.city,
     super.rating,
-    this.listCategoryModel,
+    super.address,
     this.restaurantsMenuModel,
+    this.listCategoryModel,
     this.listReviewModel,
   }) : super(
           listReview: listReviewModel,
@@ -62,7 +63,7 @@ class DetailRestaurantsModel extends DetailRestaurants {
           List<RestaurantsCategory>? data) =>
       data?.map((e) => (e as RestaurantsCategoryModel).toJson()).toList();
 
-  static List<RestaurantsReviewModel>? _customerReviewFromJson(
+  static List<RestaurantsReview>? _customerReviewFromJson(
           List<dynamic>? json) =>
       json
           ?.map(
@@ -73,8 +74,9 @@ class DetailRestaurantsModel extends DetailRestaurants {
           List<RestaurantsReview>? data) =>
       data?.map((e) => (e as RestaurantsReviewModel).toJson()).toList();
 
-  static RestaurantsMenu? _restaurantsMenuFromJson(Map<String, dynamic> json) =>
-      RestaurantsMenuModel.fromJson(json);
+  static RestaurantsMenu? _restaurantsMenuFromJson(
+          Map<String, dynamic>? json) =>
+      json != null ? RestaurantsMenuModel.fromJson(json) : null;
 
   static Map<String, dynamic>? _restaurantsMenuToJson(RestaurantsMenu? data) =>
       data?.toModel().toJson();

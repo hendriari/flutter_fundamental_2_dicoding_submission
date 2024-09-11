@@ -8,4 +8,6 @@ class ConstantsBaseUrl {
   String detailRestaurants(String? id) => 'detail/$id';
 
   String searchRestaurants(String query) => 'search?q=$query';
+
+  final String postReview = 'review';
 }

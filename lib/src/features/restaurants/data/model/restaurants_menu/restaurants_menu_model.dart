@@ -1,4 +1,6 @@
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/data/model/restaurants_beverage/restaurants_beverage_extension.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/data/model/restaurants_beverage/restaurants_beverage_model.dart';
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/entities/restaurants_beverage.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/entities/restaurants_menu.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,13 +12,13 @@ class RestaurantsMenuModel extends RestaurantsMenu {
       fromJson: _restaurantsBeverageFromJson,
       toJson: _restaurantsBeverageToJson,
       name: 'foods')
-  final List<RestaurantsBeverageModel>? foods;
+  final List<RestaurantsBeverage>? foods;
 
   @JsonKey(
       fromJson: _restaurantsBeverageFromJson,
       toJson: _restaurantsBeverageToJson,
       name: 'drinks')
-  final List<RestaurantsBeverageModel>? drinks;
+  final List<RestaurantsBeverage>? drinks;
 
   RestaurantsMenuModel({
     this.foods,
@@ -31,18 +33,12 @@ class RestaurantsMenuModel extends RestaurantsMenu {
 
   Map<String, dynamic> toJson() => _$RestaurantsMenuModelToJson(this);
 
-  static List<RestaurantsBeverageModel>? _restaurantsBeverageFromJson(
-      List<dynamic>? json) {
-    if (json != null) {
-      return json
-          .map((e) =>
-          RestaurantsBeverageModel.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return null;
-  }
+  static List<RestaurantsBeverage>? _restaurantsBeverageFromJson(
+      List<dynamic>? json) => json?.map((e) =>
+      RestaurantsBeverageModel.fromJson(e as Map<String, dynamic>))
+      .toList();
 
   static List<Map<String, dynamic>> _restaurantsBeverageToJson(
-      List<RestaurantsBeverageModel>? beverage) =>
-      beverage?.map((e) => e.toJson()).toList() ?? [];
+      List<RestaurantsBeverage>? beverage) =>
+      beverage?.map((e) => e.toModel().toJson()).toList() ?? [];
 }

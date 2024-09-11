@@ -8,6 +8,7 @@ import 'package:fluttter_fundamental_submission_2/src/features/restaurants/data/
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/repository/restaurants_repository.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/get_detail_resto_usecase.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/get_list_restaurants_usecase.dart';
+import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/post_review_usecase.dart';
 import 'package:fluttter_fundamental_submission_2/src/features/restaurants/domain/usecase/search_restaurants_usecase.dart';
 import 'package:injectable/injectable.dart';
 
@@ -47,4 +48,7 @@ abstract class InjectionModule {
 
   @lazySingleton
   SearchRestaurantsUsecase get searchRestaurantsUsecase;
+
+  @lazySingleton
+  PostReviewUsecase get postReviewUsecase;
 }

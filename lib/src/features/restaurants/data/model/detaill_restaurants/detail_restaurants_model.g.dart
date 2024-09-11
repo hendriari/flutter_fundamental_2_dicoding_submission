@@ -15,10 +15,11 @@ DetailRestaurantsModel _$DetailRestaurantsModelFromJson(
       pictureId: json['pictureId'] as String?,
       city: json['city'] as String?,
       rating: (json['rating'] as num?)?.toDouble(),
+      address: json['address'] as String?,
+      restaurantsMenuModel: DetailRestaurantsModel._restaurantsMenuFromJson(
+          json['menus'] as Map<String, dynamic>?),
       listCategoryModel: DetailRestaurantsModel._restaurantsCategoryFromJson(
           json['categories'] as List?),
-      restaurantsMenuModel: DetailRestaurantsModel._restaurantsMenuFromJson(
-          json['menus'] as Map<String, dynamic>),
       listReviewModel: DetailRestaurantsModel._customerReviewFromJson(
           json['customerReviews'] as List?),
     );
@@ -32,6 +33,7 @@ Map<String, dynamic> _$DetailRestaurantsModelToJson(
       'pictureId': instance.pictureId,
       'city': instance.city,
       'rating': instance.rating,
+      'address': instance.address,
       'categories': DetailRestaurantsModel._restaurantsCategoryToJson(
           instance.listCategoryModel),
       'menus': DetailRestaurantsModel._restaurantsMenuToJson(
