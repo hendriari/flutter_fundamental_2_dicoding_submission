@@ -42,6 +42,8 @@ class _RestaurantsAppState extends State<RestaurantsApp> {
         postReviewUsecase: getIt(),
       ),
       child: ScreenUtilInit(
+        minTextAdapt: true,
+        splitScreenMode: true,
         builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light.copyWith(
             statusBarColor: MyColors.primary600,
