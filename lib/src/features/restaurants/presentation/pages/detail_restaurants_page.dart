@@ -535,12 +535,8 @@ class _DetailRestaurantsPageState extends State<DetailRestaurantsPage> {
                                               if (restaurantsProvider
                                                       .detailRestaurants?.id !=
                                                   null) {
-                                                context.goNamed(
-                                                  'add-review',
-                                                  pathParameters: {
-                                                    'id': restaurantsProvider
-                                                        .detailRestaurants!.id!,
-                                                  },
+                                                context.push(
+                                                  '/restaurants/restaurants-detail/${restaurantsProvider.detailRestaurants!.id!}/add-review',
                                                 );
                                               }
                                             },

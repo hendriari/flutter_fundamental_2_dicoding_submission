@@ -12,6 +12,8 @@ Widget formFieldWidget({
   double? borderRadius,
   String? Function(String?)? validator,
   int? maxLines,
+  Function()? onEditingComplete,
+  TextInputAction? textInputAction,
 }) {
   return TextFormField(
     controller: controller,
@@ -21,6 +23,8 @@ Widget formFieldWidget({
     onChanged: onChanged,
     validator: validator,
     maxLines: maxLines,
+    onEditingComplete: onEditingComplete,
+    textInputAction: textInputAction,
     decoration: InputDecoration(
       isDense: true,
       filled: true,

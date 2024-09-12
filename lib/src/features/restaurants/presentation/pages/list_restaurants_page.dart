@@ -96,8 +96,8 @@ class _ListRestaurantsPageState extends State<ListRestaurantsPage> {
                     SliverPersistentHeader(
                       pinned: true,
                       delegate: HeaderPersistent(
-                        maxHeight: 30.h,
-                        minHeight: 28.h,
+                        maxHeight: 35.h,
+                        minHeight: 34.h,
                         child: Container(
                           color: Colors.white,
                           child: formFieldWidget(

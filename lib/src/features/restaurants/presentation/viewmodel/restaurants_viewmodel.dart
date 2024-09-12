@@ -241,6 +241,7 @@ class RestaurantsViewModel with ChangeNotifier {
   void clearTempSearchRestaurants() {
     Future.delayed(const Duration(seconds: 1), () {
       _listResultSearchRestaurants?.clear();
+      _loadingSearchRestaurants = StateOfConnection.doNothing;
       notifyListeners();
     });
   }
